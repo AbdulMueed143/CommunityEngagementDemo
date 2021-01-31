@@ -99,11 +99,14 @@ dependencies {
     implementation group: 'at.favre.lib', name: 'bcrypt', version: '0.9.0'
 
     //Database Libraries
-    implementation "androidx.room:room-rxjava2:$room_version"
-    implementation "androidx.room:room-runtime:$room_version"
-    kapt "androidx.room:room-compiler:$room_version"
+    implementation "androidx.room:room-rxjava2:2.2.6"
+    implementation "androidx.room:room-runtime:2.2.6"
+    kapt "androidx.room:room-compiler:2.2.6"
     // For Java use annotationProcessor instead of kapt
-    testImplementation "androidx.room:room-testing:$room_version"
+    testImplementation "androidx.room:room-testing:2.2.6"
 
+    //Lifecycle
+    implementation "android.arch.lifecycle:extensions:2.1.0"
+    kapt "android.arch.lifecycle:compiler:2.1.0"
 
 }
