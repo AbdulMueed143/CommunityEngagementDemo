@@ -11,8 +11,8 @@ class UserRoleConverter {
         @JvmStatic
         fun toStatus(role : Int) : UserRole {
 
-            if (role == UserRole.COMMUNITY.ordinal) {
-                return UserRole.COMMUNITY
+            if (role == UserRole.CITY_COUNCIL_STAFF.ordinal) {
+                return UserRole.CITY_COUNCIL_STAFF
             }
             else if (role == UserRole.RESIDENT.ordinal) {
                 return UserRole.RESIDENT

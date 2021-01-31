@@ -35,8 +35,8 @@ class RoomBuilderModule {
 
     @Singleton
     @Provides
-    fun provideCommunityDao(communityEngagementDatabase : CommunityEngagementDatabase) : CommunityDao {
-        return communityEngagementDatabase.communityDao()
+    fun provideCityCouncilDao(communityEngagementDatabase : CommunityEngagementDatabase) : CityCouncilDao {
+        return communityEngagementDatabase.cityCouncilDao()
     }
 
     @Singleton
@@ -60,8 +60,8 @@ class RoomBuilderModule {
     //Repositories
     @Singleton
     @Provides
-    fun providePostRepository(postDao: PostDao) : PostsRepository {
-        return PostsRepository(postDao)
+    fun providePostRepository(postDao: PostDao, customSharedPreferences: CustomSharedPreferences) : PostsRepository {
+        return PostsRepository(postDao, customSharedPreferences)
     }
 
 }

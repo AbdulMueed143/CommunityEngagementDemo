@@ -1,6 +1,7 @@
 package au.com.forteis.rhinocrm.db.entities
 
 import android.content.Context
+import android.util.Log
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -12,10 +13,15 @@ import au.com.communityengagement.di.db.converters.CommunityTypeConverter
 import au.com.communityengagement.di.db.converters.PostTypeConverter
 import au.com.communityengagement.di.db.dao.*
 import au.com.communityengagement.models.entitymodels.*
+import au.com.communityengagement.util.CustomSharedPreferences
+import au.com.communityengagement.util.DataGenerator
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.Executors
+import javax.inject.Inject
 
 @Database(entities =
-    [Post::class, Comment::class, User::class, Like::class, Community::class],
+    [Post::class, Comment::class, User::class, Like::class, CityCouncil::class],
     version = CommunityEngagementDatabase.VERSION_NUMBER, exportSchema = false
 )
 //These are enum converters and other data type converters like datetime
@@ -27,6 +33,7 @@ import java.util.concurrent.Executors
 abstract class CommunityEngagementDatabase : RoomDatabase() {
 
     companion object {
+
 
         val name: String = "CommunityEngagementDatabase"
         const val VERSION_NUMBER = 1
@@ -47,19 +54,42 @@ abstract class CommunityEngagementDatabase : RoomDatabase() {
                             override fun onCreate(db: SupportSQLiteDatabase) {
                                 super.onCreate(db)
                                 Executors.newSingleThreadExecutor().execute {
-                                    //Well we will initialise our database with default values of posts over here..
+
+                                    val instance =  getInstance(context)
+
+                                    //Pre-fill Database
 
                                     //Add Users
+                                    instance.userDao().insertAll(DataGenerator.getUsers())
+                                        .subscribeOn(Schedulers.io())
+                                        .observeOn(AndroidSchedulers.mainThread())
+                                        .subscribe()
 
-                                    //Add Communities
+                                    instance.cityCouncilDao().insertAll(DataGenerator.getCityCouncils())
+                                        .subscribeOn(Schedulers.io())
+                                        .observeOn(AndroidSchedulers.mainThread())
+                                        .subscribe()
 
-                                    //Add Posts For Users
 
-                                    //Add Comments and Likes
+                                    instance.userDao().insertAll(DataGenerator.getCouncilStaff())
+                                        .subscribeOn(Schedulers.io())
+                                        .observeOn(AndroidSchedulers.mainThread())
+                                        .subscribe()
 
-                                    //Add Posts For Communities
+                                    instance.postDao().insertAll(DataGenerator.getPosts())
+                                        .subscribeOn(Schedulers.io())
+                                        .observeOn(AndroidSchedulers.mainThread())
+                                        .subscribe()
 
-                                    //Add Comments and Likes
+                                    instance.commentDao().insertAll(DataGenerator.getComments())
+                                        .subscribeOn(Schedulers.io())
+                                        .observeOn(AndroidSchedulers.mainThread())
+                                        .subscribe()
+
+                                    instance.likeDao().insertAll(DataGenerator.getLikes())
+                                        .subscribeOn(Schedulers.io())
+                                        .observeOn(AndroidSchedulers.mainThread())
+                                        .subscribe()
                                 }
                             }
                         })
@@ -73,7 +103,7 @@ abstract class CommunityEngagementDatabase : RoomDatabase() {
 
     //We need to define each dao class over here...
     abstract fun commentDao() : CommentDao
-    abstract fun communityDao() : CommunityDao
+    abstract fun cityCouncilDao() : CityCouncilDao
     abstract fun likeDao() : LikeDao
     abstract fun postDao() : PostDao
     abstract fun userDao() : UserDao

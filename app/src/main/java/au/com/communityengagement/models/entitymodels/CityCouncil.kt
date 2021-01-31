@@ -3,7 +3,8 @@ package au.com.communityengagement.models.entitymodels
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import au.com.communityengagement.enums.CommunityType
+import au.com.communityengagement.enums.CouncilType
+import au.com.communityengagement.util.CustomDateTimeUtil
 import java.io.Serializable
 
 
@@ -12,8 +13,8 @@ import java.io.Serializable
  * Google Places api can provide you place id for specific town..
  * if we assume communities as towns and use that we can create a common ground to identify how towns are distinguihed..
  * */
-@Entity(tableName = Community.TABLE_NAME)
-data class Community(
+@Entity(tableName = CityCouncil.TABLE_NAME)
+data class CityCouncil(
     @PrimaryKey
     @ColumnInfo(name = ID)
     val id: String,
@@ -21,21 +22,21 @@ data class Community(
     @ColumnInfo(name = NAME)
     var name: String,
 
-    @ColumnInfo(name = COMMUNITY_TYPE)
-    val communityType : CommunityType,
+    @ColumnInfo(name = COUNCIL_TYPE)
+    val councilType : CouncilType,
 
     @ColumnInfo(name = CREATED_AT)
-    var createdAt: Long,
+    var createdAt: Long = CustomDateTimeUtil.getTodayInUTC(),
 
     @ColumnInfo(name = UPDATED_AT)
-    var updatedAt: Long,
+    var updatedAt: Long = CustomDateTimeUtil.getTodayInUTC(),
 ) : Cloneable, Serializable {
 
     companion object {
-        const val TABLE_NAME = "Community"
+        const val TABLE_NAME = "CityCouncil"
         const val ID = "id"
         const val NAME = "name"
-        const val COMMUNITY_TYPE = "community_type"
+        const val COUNCIL_TYPE = "council_type"
         const val CREATED_AT = "created_at"
         const val UPDATED_AT = "updated_at"
     }

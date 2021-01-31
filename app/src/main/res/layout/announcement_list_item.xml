@@ -3,8 +3,7 @@
     android:layout_marginTop="@dimen/size_10dp"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:orientation="vertical"
@@ -63,68 +62,86 @@
         </View>
 
         <LinearLayout
-            android:orientation="horizontal"
-            android:weightSum="2"
-            android:layout_marginRight="@dimen/size_10dp"
-            android:layout_marginLeft="@dimen/size_10dp"
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <LinearLayout
-                android:gravity="center_vertical|center_horizontal"
-                android:orientation="horizontal"
-                android:layout_weight="1"
-                android:padding="2dp"
-                android:layout_width="0dp"
+            <TextView
+                android:layout_marginStart="@dimen/size_10dp"
+                android:id="@+id/txtLikedCount"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <Button
-                    android:id="@+id/like"
-                    android:background="@drawable/ic_like"
-                    android:drawableTint="@color/white"
-                    android:backgroundTint="@color/white"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp">
-
-                </Button>
-
-                <TextView
-                    android:layout_marginLeft="@dimen/size_10dp"
-                    android:textColor="@color/background_grey"
-                    android:text="Like"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                </TextView>
-
-            </LinearLayout>
+            </TextView>
 
             <LinearLayout
-                android:gravity="center_vertical|center_horizontal"
                 android:orientation="horizontal"
-                android:layout_weight="1"
-                android:padding="2dp"
-                android:layout_width="0dp"
+                android:weightSum="2"
+                android:layout_marginRight="@dimen/size_10dp"
+                android:layout_marginLeft="@dimen/size_10dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <Button
-                    android:id="@+id/comment"
-                    android:background="@drawable/ic_comment"
-                    android:drawableTint="@color/white"
-                    android:backgroundTint="@color/white"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp">
 
-                </Button>
-
-                <TextView
-                    android:layout_marginLeft="@dimen/size_10dp"
-                    android:textColor="@color/background_grey"
-                    android:text="Comment"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:clickable="true"
+                    android:focusable="true"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:orientation="horizontal"
+                    android:layout_weight="1"
+                    android:padding="2dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content">
 
-                </TextView>
+                    <ImageView
+                        android:id="@+id/like"
+                        android:background="@drawable/ic_like"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp">
+
+                    </ImageView>
+
+                    <TextView
+                        android:layout_marginLeft="@dimen/size_10dp"
+                        android:textColor="@color/background_grey"
+                        android:text="Like"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                    </TextView>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:clickable="true"
+                    android:focusable="true"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:orientation="horizontal"
+                    android:layout_weight="1"
+                    android:padding="2dp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/comment"
+                        android:src="@drawable/ic_comment"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp">
+
+                    </ImageView>
+
+                    <TextView
+                        android:layout_marginLeft="@dimen/size_10dp"
+                        android:textColor="@color/background_grey"
+                        android:text="Comment"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                    </TextView>
+
+                </LinearLayout>
 
             </LinearLayout>
 

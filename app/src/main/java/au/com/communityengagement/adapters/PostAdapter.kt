@@ -6,9 +6,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import au.com.communityengagement.R
 import au.com.communityengagement.enums.PostType
+import au.com.communityengagement.models.entitymodels.CompletePost
 import au.com.communityengagement.models.entitymodels.Post
-import kotlinx.android.synthetic.main.post_list_item.view.txtContent
-import kotlinx.android.synthetic.main.post_list_item.view.txtPostBy
+import au.com.communityengagement.util.CustomSharedPreferences
+import com.bumptech.glide.Glide
+import kotlinx.android.synthetic.main.post_list_item.view.*
+import javax.inject.Inject
 
 /**
  * There are two types of posts
@@ -17,7 +20,8 @@ import kotlinx.android.synthetic.main.post_list_item.view.txtPostBy
  * 2. Is announcement
  * */
 
-class PostAdapter(private val posts: ArrayList<Post>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class PostAdapter(private val posts: MutableList<CompletePost>,
+                  private val customSharedPreferences: CustomSharedPreferences) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
@@ -29,7 +33,8 @@ class PostAdapter(private val posts: ArrayList<Post>) : RecyclerView.Adapter<Rec
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when (posts.get(position).postType) {
+
+        when (posts.get(position).post.postType) {
 
             PostType.POST -> {
                 (holder as PostViewHolder).bind(position)
@@ -44,30 +49,62 @@ class PostAdapter(private val posts: ArrayList<Post>) : RecyclerView.Adapter<Rec
     override fun getItemCount(): Int = posts.size
 
     override fun getItemViewType(position: Int): Int {
-        return posts.get(position).postType.ordinal
+        return posts.get(position).post.postType.ordinal
     }
 
     inner class PostViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         fun bind(position: Int) {
-
             val post = posts.get(position)
-            itemView.txtPostBy.setText(post.userId)
-            itemView.txtContent.setText(post.content)
+            itemView.txtPostBy.setText(post.user?.name)
+            itemView.txtContent.setText(post.post.content)
 
-            //Gotta get the count of likes
-            //Gotta get the comments
-//            itemView.txtLikeCount
+            val userHasLiked = post.userIsInLikedList(customSharedPreferences.getUser()?.id?:"")
+
+            itemView.txtLikedCount.setText(getLikeCountString(post.likes?.size ?: 0, userHasLiked))
+
+            if (userHasLiked) {
+                Glide.with(itemView.context).load(R.drawable.ic_liked).into(itemView.like)
+            }
+            else {
+                Glide.with(itemView.context).load(R.drawable.ic_like).into(itemView.like)
+            }
         }
-
     }
 
     inner class AnnouncementViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         fun bind(position: Int) {
             val post = posts.get(position)
-            itemView.txtPostBy.setText(post.userId)
-            itemView.txtContent.setText(post.content)
+            itemView.txtPostBy.setText(post.user?.name)
+            itemView.txtContent.setText(post.post.content)
+
+            val userHasLiked = post.userIsInLikedList(customSharedPreferences.getUser()?.id?:"")
+
+            itemView.txtLikedCount.setText(getLikeCountString(post.likes?.size ?: 0, userHasLiked))
+
+            if (userHasLiked) {
+                Glide.with(itemView.context).load(R.drawable.ic_liked).into(itemView.like)
+            }
+            else {
+                Glide.with(itemView.context).load(R.drawable.ic_like).into(itemView.like)
+            }
         }
+    }
+
+    private fun getLikeCountString(count: Int, userIsInList: Boolean) : String {
+
+        if(count == 0)
+            return ""
+
+        if (userIsInList && count == 1) {
+            return "You have liked this post."
+        }
+
+        if (userIsInList && count > 1) {
+            return "You and "+(count-1)+" other like this post."
+        }
+
+        return ""+count+"  like this post."
     }
 }

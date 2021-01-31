@@ -1,5 +1,5 @@
 package au.com.communityengagement.enums
 
 enum class UserRole {
-    RESIDENT, COMMUNITY
+    RESIDENT, CITY_COUNCIL_STAFF
 }

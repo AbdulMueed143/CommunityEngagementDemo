@@ -1,6 +1,7 @@
 package au.com.communityengagement.models.entitymodels
 
 import androidx.room.*
+import au.com.communityengagement.util.CustomDateTimeUtil
 import java.io.Serializable
 
 @Entity(tableName = Like.TABLE_NAME,
@@ -9,9 +10,9 @@ import java.io.Serializable
 
         foreignKeys = arrayOf(
 
-                ForeignKey(entity = Post::class, parentColumns = [Post.ID], childColumns = [Like.USER_ID]),
+                ForeignKey(entity = Post::class, parentColumns = [Post.ID], childColumns = [Like.POST_ID]),
 
-                ForeignKey(entity = User::class, parentColumns = [User.ID], childColumns = [Post.USER_ID])
+                ForeignKey(entity = User::class, parentColumns = [User.ID], childColumns = [Like.USER_ID])
         )
 
 )
@@ -27,10 +28,10 @@ data class Like(
         var userId: String,
 
         @ColumnInfo(name = CREATED_AT)
-        var createdAt: Long,
+        var createdAt: Long = CustomDateTimeUtil.getTodayInUTC(),
 
         @ColumnInfo(name = UPDATED_AT)
-        var updatedAt: Long
+        var updatedAt: Long = CustomDateTimeUtil.getTodayInUTC()
 ) : Cloneable, Serializable {
 
         companion object {

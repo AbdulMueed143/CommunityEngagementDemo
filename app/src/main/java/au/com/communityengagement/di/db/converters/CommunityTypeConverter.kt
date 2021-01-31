@@ -1,7 +1,7 @@
 package au.com.communityengagement.di.db.converters
 
 import androidx.room.TypeConverter
-import au.com.communityengagement.enums.CommunityType
+import au.com.communityengagement.enums.CouncilType
 
 class CommunityTypeConverter {
 
@@ -9,16 +9,13 @@ class CommunityTypeConverter {
 
         @TypeConverter
         @JvmStatic
-        fun toStatus(type : Int) : CommunityType {
+        fun toStatus(type : Int) : CouncilType {
 
-            if (type == CommunityType.TOWN.ordinal) {
-                return CommunityType.TOWN
+            if (type == CouncilType.TOWN.ordinal) {
+                return CouncilType.TOWN
             }
-            else if (type == CommunityType.GROUP.ordinal) {
-                return CommunityType.GROUP
-            }
-            else if (type == CommunityType.SUBURB.ordinal) {
-                return CommunityType.SUBURB
+            else if (type == CouncilType.SUBURB.ordinal) {
+                return CouncilType.SUBURB
             }
             else {
                 throw IllegalArgumentException("Unknown value for Community Type.") as Throwable
@@ -27,7 +24,7 @@ class CommunityTypeConverter {
 
         @TypeConverter
         @JvmStatic
-        fun toInteger(type : CommunityType) : Int {
+        fun toInteger(type : CouncilType) : Int {
             return type.ordinal
         }
     }

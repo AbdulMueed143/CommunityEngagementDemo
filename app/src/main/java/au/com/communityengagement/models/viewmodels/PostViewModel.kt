@@ -6,23 +6,22 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import au.com.communityengagement.models.entitymodels.Post
 import au.com.communityengagement.di.db.repositories.PostsRepository
+import au.com.communityengagement.models.entitymodels.CompletePost
+import io.reactivex.Flowable
 import javax.inject.Inject
 
-class PostViewModel @Inject constructor(private val postsRepository: PostsRepository) : ViewModel(), Observable {
+class PostViewModel @Inject constructor(val postsRepository: PostsRepository) : ViewModel(), Observable {
 
     //These posts are being monitored .. on change it will try to update the recyclerview
-    val posts : MutableLiveData<ArrayList<Post>> = MutableLiveData()
-
-    //Initialize it
-    init {
-        if (posts.value == null)
-            posts.value = ArrayList()
+    fun getPosts() : Flowable<MutableList<CompletePost>> {
+        return postsRepository.getAllPosts()
     }
 
-    fun load() {
-        posts.value = postsRepository.getPosts()
+    fun getPost(postId : String) : Flowable<CompletePost> {
+        return postsRepository.getPost(postId)
     }
 
+    //We can use following to change state of things on the screen...
     val propertyChangeRegistry : PropertyChangeRegistry = PropertyChangeRegistry()
 
     override fun removeOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {

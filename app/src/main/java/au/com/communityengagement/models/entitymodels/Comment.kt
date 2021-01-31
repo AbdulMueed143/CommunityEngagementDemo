@@ -1,34 +1,46 @@
 package au.com.communityengagement.models.entitymodels
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
+import androidx.room.*
+import au.com.communityengagement.util.CustomDateTimeUtil
 import java.io.Serializable
 
-@Entity(tableName = Comment.TABLE_NAME)
+@Entity(tableName = Comment.TABLE_NAME,
+
+    indices = arrayOf(Index(value = [Comment.USER_ID, Comment.POST_ID])),
+
+    foreignKeys = arrayOf(
+
+        ForeignKey(entity = Post::class, parentColumns = [Post.ID], childColumns = [Comment.POST_ID]),
+
+        ForeignKey(entity = User::class, parentColumns = [User.ID], childColumns = [Comment.USER_ID])
+    )
+)
 data class Comment(
-        @ColumnInfo(name = ID)
-        var id: String,
+    @PrimaryKey
+    @ColumnInfo(name = ID)
+    var id: String,
 
-        @ColumnInfo(name = ID)
-        var content: String,
+    @ColumnInfo(name = CONTENT)
+    var content: String,
 
-        @ColumnInfo(name = POST_ID)
-        var postId: String,
+    @ColumnInfo(name = POST_ID)
+    var postId: String,
 
-        @ColumnInfo(name = USER_ID)
-        var userId: String,
+    @ColumnInfo(name = USER_ID)
+    var userId: String,
 
-        @ColumnInfo(name = CREATED_AT)
-        var createdAt: Long,
+    @ColumnInfo(name = CREATED_AT)
+    var createdAt: Long = CustomDateTimeUtil.getTodayInUTC(),
 
-        @ColumnInfo(name = UPDATED_AT)
-        var updatedAt: Long
+    @ColumnInfo(name = UPDATED_AT)
+    var updatedAt: Long = CustomDateTimeUtil.getTodayInUTC()
 
 ) : Cloneable, Serializable {
 
     companion object {
         const val TABLE_NAME = "Comment"
-        const val ID = "content"
+        const val ID = "id"
+        const val CONTENT = "content"
         const val POST_ID = "postId"
         const val USER_ID = "user_id"
         const val CREATED_AT = "created_at"

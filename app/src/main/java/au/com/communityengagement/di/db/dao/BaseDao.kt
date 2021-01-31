@@ -19,6 +19,10 @@ interface BaseDao<T> {
     @NotNull
     fun insert(item : T) : Completable
 
+    @Insert
+    @NotNull
+    fun insertAll(itemList : List<T>) : Completable
+
     @Delete
     fun delete(item : T) : Completable
 
