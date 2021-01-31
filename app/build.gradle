@@ -105,6 +105,9 @@ dependencies {
     // For Java use annotationProcessor instead of kapt
     testImplementation "androidx.room:room-testing:2.2.6"
 
+    //Gson
+    implementation "com.google.code.gson:gson:2.8.2"
+
     //Lifecycle
     implementation "android.arch.lifecycle:extensions:2.1.0"
     kapt "android.arch.lifecycle:compiler:2.1.0"

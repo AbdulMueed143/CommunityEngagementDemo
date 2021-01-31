@@ -3,6 +3,7 @@ package au.com.communityengagement.di.modules
 import android.app.Application
 import au.com.communityengagement.di.db.dao.*
 import au.com.communityengagement.di.db.repositories.PostsRepository
+import au.com.communityengagement.util.CustomSharedPreferences
 import au.com.forteis.rhinocrm.db.entities.CommunityEngagementDatabase
 import dagger.Module
 import dagger.Provides
@@ -59,8 +60,8 @@ class RoomBuilderModule {
     //Repositories
     @Singleton
     @Provides
-    fun providePostRepository() : PostsRepository {
-        return PostsRepository()
+    fun providePostRepository(postDao: PostDao) : PostsRepository {
+        return PostsRepository(postDao)
     }
 
 }

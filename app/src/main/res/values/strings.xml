@@ -4,4 +4,6 @@
     <string name="close">Close</string>
     <string name="logout">Logout</string>
     <string name="CommentHint">Write Comment Here!</string>
+
+    <string name="preference_file_key">au.com.communityengagement.sharedpreferences</string>
 </resources>
