@@ -37,7 +37,7 @@ data class Like(
         companion object {
                 const val TABLE_NAME = "like"
                 const val ID = "id"
-                const val POST_ID = "content"
+                const val POST_ID = "post_id"
                 const val USER_ID = "user_id"
                 const val CREATED_AT = "created_at"
                 const val UPDATED_AT = "updated_at"

@@ -6,12 +6,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import au.com.communityengagement.R
 import au.com.communityengagement.enums.PostType
-import au.com.communityengagement.models.entitymodels.CompletePost
-import au.com.communityengagement.models.entitymodels.Post
+import au.com.communityengagement.enums.UserRole
+import au.com.communityengagement.models.entitymodels.DetailedPost
 import au.com.communityengagement.util.CustomSharedPreferences
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.post_list_item.view.*
-import javax.inject.Inject
 
 /**
  * There are two types of posts
@@ -20,8 +19,17 @@ import javax.inject.Inject
  * 2. Is announcement
  * */
 
-class PostAdapter(private val posts: MutableList<CompletePost>,
-                  private val customSharedPreferences: CustomSharedPreferences) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class PostAdapter(private val posts: MutableList<DetailedPost>,
+                  private val customSharedPreferences: CustomSharedPreferences,
+                  private val callback: iPostAdapterActions)
+    :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>()
+{
+
+    interface iPostAdapterActions {
+        fun onLikeClicked(post: DetailedPost, userLikedIt: Boolean)
+        fun onCommentClicked(post: DetailedPost)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
@@ -55,8 +63,14 @@ class PostAdapter(private val posts: MutableList<CompletePost>,
     inner class PostViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         fun bind(position: Int) {
+
             val post = posts.get(position)
-            itemView.txtPostBy.setText(post.user?.name)
+
+            if (post.user?.user?.userRole == UserRole.RESIDENT)
+                itemView.txtPostBy.setText(post.user?.user?.name)
+            else
+                itemView.txtPostBy.setText(post.user?.cityCouncil?.name)
+
             itemView.txtContent.setText(post.post.content)
 
             val userHasLiked = post.userIsInLikedList(customSharedPreferences.getUser()?.id?:"")
@@ -68,6 +82,14 @@ class PostAdapter(private val posts: MutableList<CompletePost>,
             }
             else {
                 Glide.with(itemView.context).load(R.drawable.ic_like).into(itemView.like)
+            }
+
+            itemView.likeView.setOnClickListener {
+                callback.onLikeClicked(post, userHasLiked)
+            }
+
+            itemView.commentView.setOnClickListener {
+                callback.onCommentClicked(post)
             }
         }
     }
@@ -75,8 +97,9 @@ class PostAdapter(private val posts: MutableList<CompletePost>,
     inner class AnnouncementViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         fun bind(position: Int) {
+
             val post = posts.get(position)
-            itemView.txtPostBy.setText(post.user?.name)
+            itemView.txtPostBy.setText(post.user?.cityCouncil?.name)
             itemView.txtContent.setText(post.post.content)
 
             val userHasLiked = post.userIsInLikedList(customSharedPreferences.getUser()?.id?:"")
@@ -88,6 +111,14 @@ class PostAdapter(private val posts: MutableList<CompletePost>,
             }
             else {
                 Glide.with(itemView.context).load(R.drawable.ic_like).into(itemView.like)
+            }
+
+            itemView.likeView.setOnClickListener {
+                callback.onLikeClicked(post, userHasLiked)
+            }
+
+            itemView.commentView.setOnClickListener {
+                callback.onCommentClicked(post)
             }
         }
     }

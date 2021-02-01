@@ -25,14 +25,15 @@ class MainActivity : DaggerAppCompatActivity(),
 
     @Inject lateinit var customSharedPreferences: CustomSharedPreferences
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
         setDrawer()
 
-        customSharedPreferences.saveUser(DataGenerator.getCurrentUser())
+        customSharedPreferences.getUser()?.let { } ?: kotlin.run {
+            customSharedPreferences.saveUser(DataGenerator.getCurrentUser())
+        }
     }
 
     private fun setDrawer() {

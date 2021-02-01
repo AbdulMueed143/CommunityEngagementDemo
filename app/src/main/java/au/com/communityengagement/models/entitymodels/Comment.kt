@@ -9,9 +9,7 @@ import java.io.Serializable
     indices = arrayOf(Index(value = [Comment.USER_ID, Comment.POST_ID])),
 
     foreignKeys = arrayOf(
-
         ForeignKey(entity = Post::class, parentColumns = [Post.ID], childColumns = [Comment.POST_ID]),
-
         ForeignKey(entity = User::class, parentColumns = [User.ID], childColumns = [Comment.USER_ID])
     )
 )
@@ -41,7 +39,7 @@ data class Comment(
         const val TABLE_NAME = "Comment"
         const val ID = "id"
         const val CONTENT = "content"
-        const val POST_ID = "postId"
+        const val POST_ID = "post_Id"
         const val USER_ID = "user_id"
         const val CREATED_AT = "created_at"
         const val UPDATED_AT = "updated_at"

@@ -60,8 +60,8 @@ class RoomBuilderModule {
     //Repositories
     @Singleton
     @Provides
-    fun providePostRepository(postDao: PostDao, customSharedPreferences: CustomSharedPreferences) : PostsRepository {
-        return PostsRepository(postDao, customSharedPreferences)
+    fun providePostRepository(postDao: PostDao, likeDao: LikeDao, commentDao: CommentDao,customSharedPreferences: CustomSharedPreferences) : PostsRepository {
+        return PostsRepository(postDao, likeDao , commentDao, customSharedPreferences)
     }
 
 }

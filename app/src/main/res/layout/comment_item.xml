@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        
+        <variable
+            name="userItem"
+            type="au.com.communityengagement.models.entitymodels.User" />
+
+        <variable
+            name="commentItem"
+            type="au.com.communityengagement.models.entitymodels.CommentWithUser" />
+
+    </data>
+
+    <LinearLayout
+        android:padding="@dimen/size_10dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:src="@drawable/ic_comment"
+            android:layout_gravity="center_vertical"
+            android:layout_width="32dp"
+            android:layout_height="32dp">
+
+        </ImageView>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:padding="@dimen/size_10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/username"
+                android:textStyle="bold"
+                android:text="@{commentItem.user.name}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/comment"
+                android:text="@{commentItem.comment.content}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </TextView>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</layout>

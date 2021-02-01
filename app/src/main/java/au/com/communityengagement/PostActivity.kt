@@ -2,21 +2,22 @@ package au.com.communityengagement
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import au.com.communityengagement.di.ViewModelProviderFactory
-import au.com.communityengagement.util.CustomSharedPreferences
-import javax.inject.Inject
+import android.view.View
+import kotlinx.android.synthetic.main.activity_editable_post.*
 
-class PostActivity : AppCompatActivity() {
+class PostActivity : AppCompatActivity(), View.OnClickListener {
 
-    @Inject
-    lateinit var viewModelProviderFactory: ViewModelProviderFactory
-    @Inject
-    lateinit var customSharedPreferences: CustomSharedPreferences
-
-    //Basically, when user clicks on comment, we open this activity to allow user to comment
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_comments)
+        setContentView(R.layout.activity_editable_post)
+        btnBack.setOnClickListener(this)
     }
 
+    override fun onClick(view: View?) {
+        when(view?.id) {
+            R.id.btnBack -> {
+                this.finish()
+            }
+        }
+    }
 }

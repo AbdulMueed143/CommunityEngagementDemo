@@ -18,7 +18,7 @@ class PostTypeConverter {
                 return PostType.ANNOUNCEMENT
             }
             else {
-                throw IllegalArgumentException("Unknown value for Post Type.") as Throwable
+                throw IllegalArgumentException("Unknown value for Post Type.")
             }
         }
 

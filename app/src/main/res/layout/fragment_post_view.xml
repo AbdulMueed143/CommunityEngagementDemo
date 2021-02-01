@@ -5,7 +5,7 @@
     <data>
         <variable
             name="viewModel"
-            type="au.com.communityengagement.models.viewmodels.PostViewModel" />
+            type="au.com.communityengagement.models.viewmodels.PostsViewModel" />
     </data>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -16,5 +16,6 @@
         android:layout_height="match_parent">
 
     </androidx.recyclerview.widget.RecyclerView>
+
 
 </layout>

@@ -18,7 +18,7 @@ class UserRoleConverter {
                 return UserRole.RESIDENT
             }
             else {
-                throw IllegalArgumentException("Unknown value for User Role.") as Throwable
+                throw IllegalArgumentException("Unknown value for User Role.")
             }
         }
 

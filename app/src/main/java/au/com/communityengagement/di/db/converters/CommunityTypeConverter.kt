@@ -18,7 +18,7 @@ class CommunityTypeConverter {
                 return CouncilType.SUBURB
             }
             else {
-                throw IllegalArgumentException("Unknown value for Community Type.") as Throwable
+                throw IllegalArgumentException("Unknown value for Community Type.")
             }
         }
 

@@ -1,28 +1,37 @@
 package au.com.communityengagement.adapters
 
-import android.view.View
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import au.com.communityengagement.models.entitymodels.Comment
+import au.com.communityengagement.databinding.CommentItemBinding
+import au.com.communityengagement.models.entitymodels.CommentWithUser
 
-class CommentsAdapter(private val comments: ArrayList<Comment>) : RecyclerView.Adapter<CommentsAdapter.CommentViewHolder>() {
+class CommentsAdapter(private val comments: ArrayList<CommentWithUser?>) :
+    RecyclerView.Adapter<CommentsAdapter.CommentViewHolder>()
+{
 
-    inner class CommentViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun bind() {
-
+    inner class CommentViewHolder(private val binding: CommentItemBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(comment: CommentWithUser) {
+            binding.apply {
+                commentItem = comment
+                executePendingBindings()
+            }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommentViewHolder {
-        TODO("Not yet implemented")
+        val binding = CommentItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return CommentViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: CommentViewHolder, position: Int) {
-        TODO("Not yet implemented")
+        comments.get(position)?.let {
+            holder.bind(it)
+        }
     }
 
     override fun getItemCount(): Int {
-        TODO("Not yet implemented")
+        return comments.size
     }
 
     override fun getItemViewType(position: Int): Int {

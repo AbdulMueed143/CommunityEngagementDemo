@@ -14,7 +14,7 @@ object DataGenerator {
     //and that is why we need to initialise them here
 
     //Lazy initializes val that is kind of constant but at runtime
-    private val USER_1 : String by  lazy { UUID.randomUUID().toString() }
+    private val USER_1 : String = "XxreT-53419-werweWEr" //This key needs to remain same always
     private val USER_2 : String by  lazy { UUID.randomUUID().toString() }
     private val USER_3 : String by  lazy { UUID.randomUUID().toString() }
 

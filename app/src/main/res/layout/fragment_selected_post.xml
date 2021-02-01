@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="selectedPostViewModel"
+            type="au.com.communityengagement.models.viewmodels.SelectedPostViewModel" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:layout_above="@id/lytComment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:background="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RelativeLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/image"
+                        android:layout_margin="@dimen/size_10dp"
+                        android:src="@drawable/ic_image_not_found"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp">
+
+                    </ImageView>
+
+                    <LinearLayout
+                        android:layout_marginTop="@dimen/size_10dp"
+                        android:layout_toEndOf="@+id/image"
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/txtPostBy"
+                            android:text="@{selectedPostViewModel.user.name}"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                        </TextView>
+
+                        <TextView
+                            android:id="@+id/txtContent"
+                            android:text="@{selectedPostViewModel.post.content}"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                        </TextView>
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+                <View
+                    android:layout_marginLeft="@dimen/size_10dp"
+                    android:layout_marginRight="@dimen/size_10dp"
+                    android:background="@color/background_grey"
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp">
+
+                </View>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_marginStart="@dimen/size_10dp"
+                        android:id="@+id/txtLikedCount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                    </TextView>
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:weightSum="2"
+                        android:layout_marginRight="@dimen/size_10dp"
+                        android:layout_marginLeft="@dimen/size_10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+
+                        <LinearLayout
+                            android:id="@+id/likeView"
+                            android:clickable="true"
+                            android:focusable="true"
+                            style="@style/Widget.AppCompat.Button.Borderless"
+                            android:gravity="center_vertical|center_horizontal"
+                            android:orientation="horizontal"
+                            android:layout_weight="1"
+                            android:onClick="@{() -> selectedPostViewModel.onLikeButtonClick()}"
+                            android:padding="2dp"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:id="@+id/like"
+                                app:imageResource="@{selectedPostViewModel.resourceId}"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp">
+
+                            </ImageView>
+
+                            <TextView
+                                android:layout_marginStart="@dimen/size_10dp"
+                                android:textColor="@color/background_grey"
+                                android:text="@string/like"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
+                            </TextView>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/commentView"
+                            android:clickable="true"
+                            android:focusable="true"
+                            style="@style/Widget.AppCompat.Button.Borderless"
+                            android:gravity="center_vertical|center_horizontal"
+                            android:orientation="horizontal"
+                            android:layout_weight="1"
+                            android:padding="2dp"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:id="@+id/comment"
+                                android:src="@drawable/ic_comment"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp">
+
+                            </ImageView>
+
+                            <TextView
+                                android:layout_marginLeft="@dimen/size_10dp"
+                                android:textColor="@color/background_grey"
+                                android:text="Comment"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
+                            </TextView>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcyComments"
+                android:paddingLeft="@dimen/size_10dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:background="@color/background_grey"
+            android:padding="@dimen/size_10dp"
+            android:id="@+id/lytComment"
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true">
+
+            <EditText
+                android:layout_toStartOf="@id/lytSendButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/light_grey"
+                android:hint="@string/CommentHint"
+                android:padding="@dimen/size_10dp"
+                android:text="@={selectedPostViewModel.comment}">
+
+            </EditText>
+
+            <LinearLayout
+                android:id="@+id/lytSendButton"
+                android:layout_alignParentEnd="true"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:gravity="center_vertical"
+                android:layout_width="48dp"
+                android:layout_height="48dp">
+
+                <ImageView
+                    android:id="@+id/send"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:onClick="@{() -> selectedPostViewModel.onCommentSend()}"
+                    android:src="@drawable/ic_send"
+                    app:tint="@color/design_default_color_primary" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</layout>

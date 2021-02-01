@@ -33,23 +33,12 @@ class CustomSharedPreferences(private val context: Context) {
         editor.apply()
     }
 
-//    fun saveState(key: String, value: Boolean) {
-//        var sharedPreferences = context.getSharedPreferences(context?.getString(R.string.preference_file_key), Context.MODE_PRIVATE)
-//        var editor = sharedPreferences.edit()
-//        editor.putString(key, value.toString()).apply()
-//    }
-
     fun getUser() : User? {
         var sharedPreference = context.getSharedPreferences(context.getString(R.string.preference_file_key), Context.MODE_PRIVATE)
         var userString = sharedPreference.getString(User.TABLE_NAME, "")
         var user = Gson().fromJson(userString, User::class.java)
         return user
     }
-
-//    fun getState(key: String) : Boolean? {
-//        var sharedPreference = context.getSharedPreferences(context.getString(R.string.preference_file_key), Context.MODE_PRIVATE)
-//        return sharedPreference.getString(key, "false")?.toBoolean()
-//    }
 
     fun deleteUser() {
         var sharedPreference = context.getSharedPreferences(context.getString(R.string.preference_file_key), Context.MODE_PRIVATE)

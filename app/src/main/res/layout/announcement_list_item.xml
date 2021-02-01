@@ -84,6 +84,7 @@
 
 
                 <LinearLayout
+                    android:id="@+id/likeView"
                     android:clickable="true"
                     android:focusable="true"
                     style="@style/Widget.AppCompat.Button.Borderless"
@@ -114,6 +115,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/commentView"
                     android:clickable="true"
                     android:focusable="true"
                     style="@style/Widget.AppCompat.Button.Borderless"
