@@ -24,8 +24,7 @@ android {
 
     buildFeatures {
         dataBinding = true
-        // for view binding:
-         viewBinding = true
+        viewBinding = true
     }
 
     buildTypes {
@@ -47,24 +46,27 @@ android {
 
 dependencies {
 
-    //Variables to define version number for libraries, makes things bit clean.
-    def lifecycle_version = "2.1.0"
-    def daggerVersion = "2.23.2"
-    def room_version = "2.2.5"
-    def dexter_version = "5.0.0"
-
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.3.2'
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    testImplementation 'junit:junit:4.+'
+
+    //Libraries for test cases..
+    testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    androidTestImplementation "androidx.test.espresso:espresso-contrib:3.3.0"
+    implementation "androidx.test.espresso:espresso-idling-resource:3.3.0"
 
+    // androidx.test
+    androidTestImplementation "androidx.test:runner:1.3.0"
+    androidTestImplementation "androidx.test:core:1.3.0"
+    androidTestImplementation "androidx.test.ext:junit-ktx:1.1.2"
 
     //Permissions, Helps in writing code for asking user permission on runtime, if missing
-    implementation "com.karumi:dexter:$dexter_version"
+    //though we did not have to use anything in this project
+    implementation "com.karumi:dexter:5.0.0"
 
     //DI - Dagger 2 Libraries, Apparently we can use much simpler KOIN but industry usually likes dagger
     //so here we are
@@ -73,11 +75,11 @@ dependencies {
     compileOnly "javax.annotation:jsr250-api:1.0"
 
 
-    kapt "com.google.dagger:dagger-compiler:$daggerVersion"
-    kapt "com.google.dagger:dagger-android-processor:$daggerVersion"
-    implementation "com.google.dagger:dagger:$daggerVersion"
-    implementation "com.google.dagger:dagger-android:$daggerVersion"
-    implementation "com.google.dagger:dagger-android-support:$daggerVersion"
+    kapt "com.google.dagger:dagger-compiler:2.23.2"
+    kapt "com.google.dagger:dagger-android-processor:2.23.2"
+    implementation "com.google.dagger:dagger:2.27"
+    implementation "com.google.dagger:dagger-android:2.23.2"
+    implementation "com.google.dagger:dagger-android-support:2.23.2"
 
 
     //Android Design Support
@@ -108,7 +110,7 @@ dependencies {
     testImplementation "androidx.room:room-testing:2.2.6"
 
     //Gson
-    implementation "com.google.code.gson:gson:2.8.2"
+    implementation "com.google.code.gson:gson:2.8.5"
 
     //Lifecycle
     implementation "android.arch.lifecycle:extensions:2.1.0"

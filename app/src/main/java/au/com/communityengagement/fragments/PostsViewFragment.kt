@@ -17,6 +17,7 @@ import au.com.communityengagement.models.entitymodels.DetailedPost
 import au.com.communityengagement.models.entitymodels.Post
 import au.com.communityengagement.models.viewmodels.PostsViewModel
 import au.com.communityengagement.util.CustomSharedPreferences
+import au.com.communityengagement.util.EspressoIdlingResource
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_post_view.*
 import javax.inject.Inject
