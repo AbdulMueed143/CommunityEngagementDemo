@@ -1,4 +1,4 @@
-package au.com.communityengagement.di.db.dao
+package au.com.communityengagement.db.dao
 
 import androidx.room.Dao
 import au.com.communityengagement.models.entitymodels.User

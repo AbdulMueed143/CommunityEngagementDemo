@@ -75,6 +75,7 @@ class PostsViewFragment : DaggerFragment(), PostAdapter.iPostAdapterActions {
             it.notifyDataSetChanged()
         } ?: kotlin.run {
             rcyPosts?.adapter = PostAdapter(posts, customSharedPreferences, this)
+            rcyPosts?.setHasFixedSize(true)
         }
     }
 

@@ -3,11 +3,17 @@ package au.com.communityengagement.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
+import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
 import au.com.communityengagement.R
+import au.com.communityengagement.databinding.AnnouncementListItemBinding
+import au.com.communityengagement.databinding.PostListItemBinding
 import au.com.communityengagement.enums.PostType
 import au.com.communityengagement.enums.UserRole
+import au.com.communityengagement.models.entitymodels.CommentWithUser
 import au.com.communityengagement.models.entitymodels.DetailedPost
+import au.com.communityengagement.models.entitymodels.User
 import au.com.communityengagement.util.CustomSharedPreferences
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.post_list_item.view.*
@@ -20,7 +26,7 @@ import kotlinx.android.synthetic.main.post_list_item.view.*
  * */
 
 class PostAdapter(private val posts: MutableList<DetailedPost>,
-                  private val customSharedPreferences: CustomSharedPreferences,
+                   val customSharedPreferences: CustomSharedPreferences,
                   private val callback: iPostAdapterActions)
     :
     RecyclerView.Adapter<RecyclerView.ViewHolder>()
@@ -34,10 +40,10 @@ class PostAdapter(private val posts: MutableList<DetailedPost>,
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
         if (viewType == PostType.POST.ordinal) {
-            return PostViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.post_list_item, parent, false))
+            return  PostViewHolder(PostListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
         }
 
-        return AnnouncementViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.announcement_list_item, parent, false))
+        return  AnnouncementViewHolder(AnnouncementListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -45,80 +51,100 @@ class PostAdapter(private val posts: MutableList<DetailedPost>,
         when (posts.get(position).post.postType) {
 
             PostType.POST -> {
-                (holder as PostViewHolder).bind(position)
+                (holder as PostViewHolder).bind(posts.get(position),
+                        createOnLikeClickListener(position),
+                        createOnCommentClickListener(position))
             }
 
             PostType.ANNOUNCEMENT -> {
-                (holder as AnnouncementViewHolder).bind(position)
+                (holder as AnnouncementViewHolder).bind(posts.get(position),
+                        createOnLikeClickListener(position),
+                        createOnCommentClickListener(position))
             }
         }
     }
 
     override fun getItemCount(): Int = posts.size
 
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
+    }
+
     override fun getItemViewType(position: Int): Int {
         return posts.get(position).post.postType.ordinal
     }
 
-    inner class PostViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    //We have created base view model class
+    open class BaseViewHolder(viewDataBinding: ViewDataBinding) : RecyclerView.ViewHolder(viewDataBinding.root) {
 
-        fun bind(position: Int) {
+        fun bind() {}
 
-            val post = posts.get(position)
-
-            if (post.user?.user?.userRole == UserRole.RESIDENT)
-                itemView.txtPostBy.setText(post.user?.user?.name)
-            else
-                itemView.txtPostBy.setText(post.user?.cityCouncil?.name)
-
-            itemView.txtContent.setText(post.post.content)
-
-            val userHasLiked = post.userIsInLikedList(customSharedPreferences.getUser()?.id?:"")
-
-            itemView.txtLikedCount.setText(getLikeCountString(post.likes?.size ?: 0, userHasLiked))
-
-            if (userHasLiked) {
-                Glide.with(itemView.context).load(R.drawable.ic_liked).into(itemView.like)
-            }
-            else {
-                Glide.with(itemView.context).load(R.drawable.ic_like).into(itemView.like)
+        fun getResourceId(post: DetailedPost, user: User?) :Int {
+            user?.id?.let {
+                if (post.userIsInLikedList(it) )
+                    return R.drawable.ic_liked
             }
 
-            itemView.likeView.setOnClickListener {
-                callback.onLikeClicked(post, userHasLiked)
-            }
+            return R.drawable.ic_like
+        }
+    }
 
-            itemView.commentView.setOnClickListener {
-                callback.onCommentClicked(post)
+    inner class PostViewHolder(val binding: PostListItemBinding) : BaseViewHolder(binding) {
+
+        @Override fun bind(post: DetailedPost, onLikeClickListener : View.OnClickListener, onCommentClickListener : View.OnClickListener) {
+
+            binding.apply {
+
+                if (rcyPostComments.adapter == null) {
+                    post.comments?.toCollection(ArrayList())?.let { rcyPostComments.adapter = CommentsAdapter(it) }
+                }
+                else {
+                    //before notifying first change the posts comments
+                    post.comments?.toCollection(ArrayList())?.let { (rcyPostComments.adapter as CommentsAdapter).resetData(it) }
+                }
+
+                imageResourceId = getResourceId(post, customSharedPreferences.getUser())
+                onLikeClicked = onLikeClickListener
+                onCommentClicked = onCommentClickListener
+                detailedPostItem = post
+                executePendingBindings()
             }
         }
     }
 
-    inner class AnnouncementViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class AnnouncementViewHolder(val binding: AnnouncementListItemBinding) : BaseViewHolder(binding) {
+        @Override fun bind(post: DetailedPost, onLikeClickListener : View.OnClickListener, onCommentClickListener : View.OnClickListener) {
 
-        fun bind(position: Int) {
+            binding.apply {
 
-            val post = posts.get(position)
-            itemView.txtPostBy.setText(post.user?.cityCouncil?.name)
-            itemView.txtContent.setText(post.post.content)
+                if (rcyPostComments.adapter == null) {
+                    post.comments?.toCollection(ArrayList())?.let { rcyPostComments.adapter = CommentsAdapter(it) }
+                }
+                else {
+                    post.comments?.toCollection(ArrayList())?.let { (rcyPostComments.adapter as CommentsAdapter).resetData(it) }
+                }
 
-            val userHasLiked = post.userIsInLikedList(customSharedPreferences.getUser()?.id?:"")
-
-            itemView.txtLikedCount.setText(getLikeCountString(post.likes?.size ?: 0, userHasLiked))
-
-            if (userHasLiked) {
-                Glide.with(itemView.context).load(R.drawable.ic_liked).into(itemView.like)
+                imageResourceId = getResourceId(post, customSharedPreferences.getUser())
+                onLikeClicked = onLikeClickListener
+                onCommentClicked = onCommentClickListener
+                detailedPostItem = post
+                executePendingBindings()
             }
-            else {
-                Glide.with(itemView.context).load(R.drawable.ic_like).into(itemView.like)
-            }
+        }
+    }
 
-            itemView.likeView.setOnClickListener {
-                callback.onLikeClicked(post, userHasLiked)
+    private fun createOnLikeClickListener(position: Int) : View.OnClickListener {
+        return View.OnClickListener {
+            posts.get(position).let {
+                callback.onLikeClicked(it, posts.get(position).userIsInLikedList(customSharedPreferences.getUser()))
             }
+        }
+    }
 
-            itemView.commentView.setOnClickListener {
-                callback.onCommentClicked(post)
+    private fun createOnCommentClickListener(position: Int) : View.OnClickListener {
+        return View.OnClickListener {
+            posts.get(position).let {
+                callback.onCommentClicked(it)
             }
         }
     }

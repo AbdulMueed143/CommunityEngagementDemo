@@ -1,4 +1,4 @@
-package au.com.forteis.rhinocrm.db.entities
+package au.com.communityengagement.db
 
 import android.content.Context
 import android.util.Log
@@ -9,20 +9,15 @@ import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
 import au.com.communityengagement.db.converters.DateTimeConverter
 import au.com.communityengagement.db.converters.UserRoleConverter
-import au.com.communityengagement.di.db.converters.CommunityTypeConverter
-import au.com.communityengagement.di.db.converters.PostTypeConverter
-import au.com.communityengagement.di.db.dao.*
+import au.com.communityengagement.db.converters.CommunityTypeConverter
+import au.com.communityengagement.db.converters.PostTypeConverter
+import au.com.communityengagement.db.dao.*
 import au.com.communityengagement.models.entitymodels.*
-import au.com.communityengagement.util.CustomSharedPreferences
 import au.com.communityengagement.util.DataGenerator
 import io.reactivex.Completable
-import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import java.util.HashMap
 import java.util.concurrent.Executors
-import javax.inject.Inject
 
 @Database(entities =
     [Post::class, Comment::class, User::class, Like::class, CityCouncil::class],
@@ -37,15 +32,13 @@ import javax.inject.Inject
 abstract class CommunityEngagementDatabase : RoomDatabase() {
 
     companion object {
-
-
-        val name: String = "CommunityEngagementDatabase"
+        val name: String = "CommunityEngagementDb"
         const val VERSION_NUMBER = 1
 
         private var instance: CommunityEngagementDatabase? = null
+
         private var completableList = ArrayList<Completable>()
 
-//        val data  = HashMap<Long, Single<B>>()
 
         fun getInstance(context: Context) : CommunityEngagementDatabase {
 
@@ -58,45 +51,50 @@ abstract class CommunityEngagementDatabase : RoomDatabase() {
                         CommunityEngagementDatabase::class.java, name)
                         .fallbackToDestructiveMigration()
                         .addCallback(object : RoomDatabase.Callback() {
+
                             override fun onCreate(db: SupportSQLiteDatabase) {
                                 super.onCreate(db)
+
+                                val instance = getInstance(context)
+
                                 Executors.newSingleThreadExecutor().execute {
-
-                                    val instance =  getInstance(context)
-
                                     //Pre-fill Database
-
-                                    completableList.add(instance.userDao().insertAll(DataGenerator.getUsers())
+                                    completableList.add(0, instance.userDao().insertAll(DataGenerator.getUsers())
                                             .subscribeOn(Schedulers.io())
                                             .observeOn(AndroidSchedulers.mainThread()))
 
-                                    completableList.add(instance.cityCouncilDao().insertAll(DataGenerator.getCityCouncils())
-                                        .subscribeOn(Schedulers.io())
-                                        .observeOn(AndroidSchedulers.mainThread()))
+                                    completableList.add(1, instance.cityCouncilDao().insertAll(DataGenerator.getCityCouncils())
+                                            .subscribeOn(Schedulers.io())
+                                            .observeOn(AndroidSchedulers.mainThread()))
 
-                                    completableList.add(instance.userDao().insertAll(DataGenerator.getCouncilStaff())
-                                        .subscribeOn(Schedulers.io())
-                                        .observeOn(AndroidSchedulers.mainThread()))
+                                    completableList.add(2, instance.userDao().insertAll(DataGenerator.getCouncilStaff())
+                                            .subscribeOn(Schedulers.io())
+                                            .observeOn(AndroidSchedulers.mainThread()))
 
-                                    completableList.add(instance.postDao().insertAll(DataGenerator.getPosts())
-                                        .subscribeOn(Schedulers.io())
-                                        .observeOn(AndroidSchedulers.mainThread()))
+                                    completableList.add(3, instance.postDao().insertAll(DataGenerator.getPosts())
+                                            .subscribeOn(Schedulers.io())
+                                            .observeOn(AndroidSchedulers.mainThread()))
 
-                                    completableList.add(instance.commentDao().insertAll(DataGenerator.getComments())
-                                        .subscribeOn(Schedulers.io())
-                                        .observeOn(AndroidSchedulers.mainThread()))
+                                    completableList.add(4, instance.commentDao().insertAll(DataGenerator.getComments())
+                                            .subscribeOn(Schedulers.io())
+                                            .observeOn(AndroidSchedulers.mainThread()))
 
-                                    completableList.add(instance.likeDao().insertAll(DataGenerator.getLikes())
-                                        .subscribeOn(Schedulers.io())
-                                        .observeOn(AndroidSchedulers.mainThread()))
+                                    completableList.add(5, instance.likeDao().insertAll(DataGenerator.getLikes())
+                                            .subscribeOn(Schedulers.io())
+                                            .observeOn(AndroidSchedulers.mainThread()))
 
                                     //Execute them line by line each after other...
                                     //Because of foreign keys sequence is important...
                                     completableList.forEach {
-                                        it.subscribe({},{})
+                                        it.subscribe({
+                                            Log.e("Data", "Added")
+                                        },{
+                                            Log.e("Error", it.message.toString())
+                                        })
                                     }
 
                                 }
+
                             }
                         })
                         .build()

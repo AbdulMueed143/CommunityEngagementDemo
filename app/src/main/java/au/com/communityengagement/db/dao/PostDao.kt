@@ -1,4 +1,4 @@
-package au.com.communityengagement.di.db.dao
+package au.com.communityengagement.db.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
@@ -15,7 +15,7 @@ interface PostDao : BaseDao<Post> {
     fun getPost(postId: String) : LiveData<DetailedPost>
 
     @Transaction
-    @Query("SELECT * FROM "+Post.TABLE_NAME)
+    @Query("SELECT * FROM "+Post.TABLE_NAME + " ORDER BY "+Post.USER_ID+" ASC")
     fun getAllPosts() : LiveData<MutableList<DetailedPost>>
 
 }

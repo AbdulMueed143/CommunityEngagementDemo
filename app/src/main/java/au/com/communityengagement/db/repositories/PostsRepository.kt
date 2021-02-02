@@ -1,15 +1,14 @@
-package au.com.communityengagement.di.db.repositories
+package au.com.communityengagement.db.repositories
 
 import androidx.lifecycle.LiveData
-import au.com.communityengagement.di.db.dao.CommentDao
-import au.com.communityengagement.di.db.dao.LikeDao
-import au.com.communityengagement.di.db.dao.PostDao
+import au.com.communityengagement.db.dao.CommentDao
+import au.com.communityengagement.db.dao.LikeDao
+import au.com.communityengagement.db.dao.PostDao
 import au.com.communityengagement.models.entitymodels.Comment
 import au.com.communityengagement.models.entitymodels.DetailedPost
 import au.com.communityengagement.models.entitymodels.Like
 import au.com.communityengagement.util.CustomSharedPreferences
 import io.reactivex.Completable
-import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.util.*

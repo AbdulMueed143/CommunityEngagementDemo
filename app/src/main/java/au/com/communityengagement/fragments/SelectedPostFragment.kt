@@ -5,13 +5,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import au.com.communityengagement.PostActivity
 import au.com.communityengagement.adapters.CommentsAdapter
 import au.com.communityengagement.databinding.FragmentSelectedPostBinding
 import au.com.communityengagement.di.ViewModelProviderFactory
-import au.com.communityengagement.models.entitymodels.Comment
 import au.com.communityengagement.models.entitymodels.CommentWithUser
 import au.com.communityengagement.models.entitymodels.Post
 import au.com.communityengagement.models.viewmodels.SelectedPostViewModel
@@ -28,7 +26,7 @@ class SelectedPostFragment : DaggerFragment() {
     private lateinit var binding: FragmentSelectedPostBinding
     var postId : String = ""
 
-    private var comments = ArrayList<CommentWithUser?>()
+    private var comments = ArrayList<CommentWithUser>()
 
     @SuppressLint("CheckResult")
     override fun onCreate(savedInstanceState: Bundle?) {

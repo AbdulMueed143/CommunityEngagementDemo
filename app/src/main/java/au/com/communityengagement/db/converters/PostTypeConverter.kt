@@ -1,4 +1,4 @@
-package au.com.communityengagement.di.db.converters
+package au.com.communityengagement.db.converters
 
 import androidx.room.TypeConverter
 import au.com.communityengagement.enums.PostType

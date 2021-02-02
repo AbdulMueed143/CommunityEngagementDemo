@@ -6,11 +6,12 @@ import androidx.recyclerview.widget.RecyclerView
 import au.com.communityengagement.databinding.CommentItemBinding
 import au.com.communityengagement.models.entitymodels.CommentWithUser
 
-class CommentsAdapter(private val comments: ArrayList<CommentWithUser?>) :
+class CommentsAdapter(private val comments: ArrayList<CommentWithUser>) :
     RecyclerView.Adapter<CommentsAdapter.CommentViewHolder>()
 {
 
     inner class CommentViewHolder(private val binding: CommentItemBinding) : RecyclerView.ViewHolder(binding.root) {
+
         fun bind(comment: CommentWithUser) {
             binding.apply {
                 commentItem = comment
@@ -25,7 +26,7 @@ class CommentsAdapter(private val comments: ArrayList<CommentWithUser?>) :
     }
 
     override fun onBindViewHolder(holder: CommentViewHolder, position: Int) {
-        comments.get(position)?.let {
+        comments.get(position).let {
             holder.bind(it)
         }
     }
@@ -36,5 +37,11 @@ class CommentsAdapter(private val comments: ArrayList<CommentWithUser?>) :
 
     override fun getItemViewType(position: Int): Int {
         return position
+    }
+
+    fun resetData(comments: ArrayList<CommentWithUser>) {
+        this.comments.clear()
+        this.comments.addAll(comments)
+        notifyDataSetChanged()
     }
 }

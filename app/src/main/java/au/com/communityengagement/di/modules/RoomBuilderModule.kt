@@ -1,10 +1,10 @@
 package au.com.communityengagement.di.modules
 
 import android.app.Application
-import au.com.communityengagement.di.db.dao.*
-import au.com.communityengagement.di.db.repositories.PostsRepository
+import au.com.communityengagement.db.CommunityEngagementDatabase
+import au.com.communityengagement.db.dao.*
+import au.com.communityengagement.db.repositories.PostsRepository
 import au.com.communityengagement.util.CustomSharedPreferences
-import au.com.forteis.rhinocrm.db.entities.CommunityEngagementDatabase
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

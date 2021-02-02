@@ -1,7 +1,6 @@
-package au.com.communityengagement.di.db.dao
+package au.com.communityengagement.db.dao
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Query
 import au.com.communityengagement.models.entitymodels.Like
 import io.reactivex.Completable

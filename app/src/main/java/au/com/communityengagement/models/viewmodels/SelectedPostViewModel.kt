@@ -1,7 +1,6 @@
 package au.com.communityengagement.models.viewmodels
 
 import android.annotation.SuppressLint
-import android.graphics.drawable.Drawable
 import android.util.Log
 import androidx.databinding.Bindable
 import androidx.databinding.Observable
@@ -10,12 +9,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import au.com.communityengagement.BR
 import au.com.communityengagement.R
-import au.com.communityengagement.di.db.repositories.PostsRepository
+import au.com.communityengagement.db.repositories.PostsRepository
 import au.com.communityengagement.models.entitymodels.DetailedPost
 import au.com.communityengagement.models.entitymodels.Post
 import au.com.communityengagement.models.entitymodels.User
 import au.com.communityengagement.util.CustomSharedPreferences
-import io.reactivex.Flowable
 import javax.inject.Inject
 
 class SelectedPostViewModel @Inject constructor(val postsRepository: PostsRepository) : ViewModel(), Observable {

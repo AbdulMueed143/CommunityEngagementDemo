@@ -39,4 +39,15 @@ class DetailedPost(
         return false
     }
 
+    fun userIsInLikedList(user: User?) : Boolean {
+        user?.let{
+                likes?.forEach { like-> kotlin.run {
+                    if (like.userId.equals(it.id, true))
+                        return true
+                }
+            }
+        }
+        return false
+    }
+
 }

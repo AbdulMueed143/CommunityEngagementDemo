@@ -1,11 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    android:layout_marginTop="@dimen/size_10dp"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout
+    <data>
+
+        <variable
+            name="imageResourceId"
+            type="Integer" />
+
+        <variable
+            name="onLikeClicked"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="onCommentClicked"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="detailedPostItem"
+            type="au.com.communityengagement.models.entitymodels.DetailedPost" />
+    </data>
+
+    <RelativeLayout
+        android:layout_marginTop="@dimen/size_10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
         android:orientation="vertical"
         android:background="@color/white"
         android:layout_width="match_parent"
@@ -34,7 +55,7 @@
 
                     <TextView
                         android:id="@+id/txtPostBy"
-                        android:text="Abdul Mueed"
+                        android:text="@{detailedPostItem.user.user.name}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
@@ -42,7 +63,7 @@
 
                     <TextView
                         android:id="@+id/txtContent"
-                        android:text="This is the ocntent of this post."
+                        android:text="@{detailedPostItem.post.content}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
@@ -82,11 +103,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-
                     <LinearLayout
                         android:id="@+id/likeView"
                         android:clickable="true"
                         android:focusable="true"
+                        android:onClick="@{onLikeClicked}"
                         style="@style/Widget.AppCompat.Button.Borderless"
                         android:gravity="center_vertical|center_horizontal"
                         android:orientation="horizontal"
@@ -97,16 +118,15 @@
 
                         <ImageView
                             android:id="@+id/like"
-                            android:background="@drawable/ic_like"
+                            app:imageResource="@{imageResourceId}"
                             android:layout_width="24dp"
                             android:layout_height="24dp">
 
                         </ImageView>
 
                         <TextView
-                            android:layout_marginLeft="@dimen/size_10dp"
-                            android:textColor="@color/background_grey"
-                            android:text="Like"
+                            android:layout_marginStart="@dimen/size_10dp"
+                            android:text="@string/like"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content">
 
@@ -118,6 +138,7 @@
                         android:id="@+id/commentView"
                         android:clickable="true"
                         android:focusable="true"
+                        android:onClick="@{onCommentClicked}"
                         style="@style/Widget.AppCompat.Button.Borderless"
                         android:gravity="center_vertical|center_horizontal"
                         android:orientation="horizontal"
@@ -147,8 +168,18 @@
 
                 </LinearLayout>
 
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rcyPostComments"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                </androidx.recyclerview.widget.RecyclerView>
+
             </LinearLayout>
 
     </LinearLayout>
 
 </RelativeLayout>
+
+</layout>

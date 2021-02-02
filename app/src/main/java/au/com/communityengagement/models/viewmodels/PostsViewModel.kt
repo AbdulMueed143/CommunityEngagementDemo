@@ -4,10 +4,9 @@ import androidx.databinding.Observable
 import androidx.databinding.PropertyChangeRegistry
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import au.com.communityengagement.di.db.repositories.PostsRepository
+import au.com.communityengagement.db.repositories.PostsRepository
 import au.com.communityengagement.models.entitymodels.DetailedPost
 import io.reactivex.Completable
-import io.reactivex.Flowable
 import javax.inject.Inject
 
 class PostsViewModel @Inject constructor(val postsRepository: PostsRepository) : ViewModel(), Observable {

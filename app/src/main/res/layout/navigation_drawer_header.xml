@@ -19,19 +19,4 @@
 
     </androidx.appcompat.widget.AppCompatImageView>
 
-    <TextView
-        android:text="Council Name"
-        android:tooltipText="Council Name"
-        android:textColor="@color/white"
-        android:layout_below="@id/logo"
-        android:gravity="center"
-        android:textAlignment="center"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-    </TextView>
-
-
-
-
 </RelativeLayout>
