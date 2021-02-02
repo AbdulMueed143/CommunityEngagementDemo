@@ -23,11 +23,8 @@ import java.util.concurrent.Executors
 import javax.inject.Inject
 
 class MainActivity : DaggerAppCompatActivity(),
-    MultiplePermissionsListener,
     NavigationView.OnNavigationItemSelectedListener {
 
-    //We are not using it but we potential can simply create list of permissions and show dialog if permissions are needed
-    val permissions = listOf(Manifest.permission.INTERNET)
 
     @Inject lateinit var customSharedPreferences: CustomSharedPreferences
     @Inject lateinit var instance: CommunityEngagementDatabase
@@ -53,17 +50,6 @@ class MainActivity : DaggerAppCompatActivity(),
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        TODO("Not yet implemented")
-    }
-
-    override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
-        TODO("Not yet implemented")
-    }
-
-    override fun onPermissionRationaleShouldBeShown(
-        permissions: MutableList<PermissionRequest>?,
-        token: PermissionToken?
-    ) {
         TODO("Not yet implemented")
     }
 }

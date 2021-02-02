@@ -43,7 +43,7 @@ class PostsViewFragment : DaggerFragment(), PostAdapter.iPostAdapterActions {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this, viewModelProviderFactory).get(PostsViewModel::class.java)
 
-        viewModel.getPosts().observe(this, Observer {
+        viewModel.getPosts().observe(this, {
             posts.clear()
             posts.addAll(it)
             setupAdapter()

@@ -18,6 +18,7 @@ import io.reactivex.Completable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
 
 @Database(entities =
     [Post::class, Comment::class, User::class, Like::class, CityCouncil::class],
@@ -32,7 +33,7 @@ import java.util.concurrent.Executors
 abstract class CommunityEngagementDatabase : RoomDatabase() {
 
     companion object {
-        val name: String = "CommunityEngagementDb"
+        val name: String = "CommunityEngagementDatabase"
         const val VERSION_NUMBER = 1
 
         private var instance: CommunityEngagementDatabase? = null
@@ -63,38 +64,42 @@ abstract class CommunityEngagementDatabase : RoomDatabase() {
                                             .subscribeOn(Schedulers.io())
                                             .observeOn(AndroidSchedulers.mainThread()))
 
-                                    completableList.add(1, instance.cityCouncilDao().insertAll(DataGenerator.getCityCouncils())
+                                    completableList.add(instance.cityCouncilDao().insertAll(DataGenerator.getCityCouncils())
                                             .subscribeOn(Schedulers.io())
                                             .observeOn(AndroidSchedulers.mainThread()))
 
-                                    completableList.add(2, instance.userDao().insertAll(DataGenerator.getCouncilStaff())
+                                    completableList.add(instance.userDao().insertAll(DataGenerator.getCouncilStaff())
                                             .subscribeOn(Schedulers.io())
                                             .observeOn(AndroidSchedulers.mainThread()))
 
-                                    completableList.add(3, instance.postDao().insertAll(DataGenerator.getPosts())
+                                    completableList.add(instance.postDao().insertAll(DataGenerator.getPosts())
                                             .subscribeOn(Schedulers.io())
                                             .observeOn(AndroidSchedulers.mainThread()))
 
-                                    completableList.add(4, instance.commentDao().insertAll(DataGenerator.getComments())
+                                    completableList.add(instance.commentDao().insertAll(DataGenerator.getComments())
                                             .subscribeOn(Schedulers.io())
                                             .observeOn(AndroidSchedulers.mainThread()))
 
-                                    completableList.add(5, instance.likeDao().insertAll(DataGenerator.getLikes())
+                                    completableList.add(instance.likeDao().insertAll(DataGenerator.getLikes())
                                             .subscribeOn(Schedulers.io())
                                             .observeOn(AndroidSchedulers.mainThread()))
 
                                     //Execute them line by line each after other...
                                     //Because of foreign keys sequence is important...
+                                    //We need to give 1 thread enough time to insert before other..
+                                    //Due to parrallelis otherwise we will get foriegn key error..
+                                    var delayValue = 2000L
                                     completableList.forEach {
-                                        it.subscribe({
+                                        it.delay(delayValue, TimeUnit.MILLISECONDS).subscribe({
                                             Log.e("Data", "Added")
                                         },{
                                             Log.e("Error", it.message.toString())
                                         })
+
+                                        delayValue += 2000L
                                     }
-
+                                    //There are other solutions but this is the best quickest way..
                                 }
-
                             }
                         })
                         .build()

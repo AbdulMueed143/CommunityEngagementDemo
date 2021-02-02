@@ -22,8 +22,10 @@ android {
         testOptions.unitTests.includeAndroidResources = true
     }
 
-    dataBinding {
-        enabled = true
+    buildFeatures {
+        dataBinding = true
+        // for view binding:
+         viewBinding = true
     }
 
     buildTypes {
